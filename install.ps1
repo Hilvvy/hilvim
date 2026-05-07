@@ -1,7 +1,8 @@
 param(
     [switch]$Full,
     [switch]$WithAlacritty,
-    [string]$NvimRepo = "https://github.com/Hilvvy/nvim-config.git",
+    [switch]$WithFonts,
+    [string]$NvimRepo = "https://github.com/Hilvyy/nvim-config.git",
     [string]$NvimBranch = "stable"
 )
 
@@ -12,11 +13,6 @@ function Install-WithWinget {
         [string]$Id,
         [string]$Name
     )
-
-    if (winget list --id $Id -e | Select-String $Id) {
-        Write-Host "$Name ya está instalado."
-        return
-    }
 
     Write-Host "Instalando $Name..."
     winget install --id $Id -e --accept-package-agreements --accept-source-agreements
@@ -49,14 +45,50 @@ function Install-NetcoreDbg {
     New-Item -ItemType Directory -Path $targetDir -Force | Out-Null
 
     Invoke-WebRequest $url -OutFile $zipPath
-
-    Write-Host "Extrayendo netcoredbg..."
     Expand-Archive $zipPath -DestinationPath $targetDir -Force
     Remove-Item $zipPath -Force
 
     Add-ToUserPath "$targetDir\netcoredbg"
-
     Write-Host "netcoredbg instalado."
+}
+
+function Install-IosevkaNerdFont {
+    Write-Host "Instalando Iosevka Nerd Font..."
+
+    $fontsDir = "$env:LOCALAPPDATA\Microsoft\Windows\Fonts"
+    $zipPath = "$env:TEMP\Iosevka.zip"
+    $extractPath = "$env:TEMP\IosevkaFont"
+    $url = "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/Iosevka.zip"
+
+    New-Item -ItemType Directory -Path $fontsDir -Force | Out-Null
+
+    if (Test-Path $extractPath) {
+        Remove-Item $extractPath -Recurse -Force
+    }
+
+    Invoke-WebRequest $url -OutFile $zipPath
+    Expand-Archive $zipPath -DestinationPath $extractPath -Force
+
+    Get-ChildItem $extractPath -Filter "*.ttf" -Recurse | ForEach-Object {
+        Copy-Item $_.FullName $fontsDir -Force
+    }
+
+    Remove-Item $zipPath -Force
+    Remove-Item $extractPath -Recurse -Force
+
+    Write-Host "Iosevka Nerd Font instalada."
+    Write-Host "Puede que tengás que cerrar sesión o reiniciar la terminal."
+}
+
+function Install-AlacrittyConfig {
+    $source = Join-Path $PSScriptRoot "configs\alacritty"
+    $target = "$env:APPDATA\alacritty"
+
+    if ($WithAlacritty -and (Test-Path $source)) {
+        Write-Host "Copiando configuración de Alacritty..."
+        New-Item -ItemType Directory -Path $target -Force | Out-Null
+        Copy-Item "$source\*" $target -Recurse -Force
+    }
 }
 
 Write-Host "=== HILVIM Installer - Windows ==="
@@ -85,6 +117,12 @@ if ($WithAlacritty) {
     Install-WithWinget "Alacritty.Alacritty" "Alacritty"
 }
 
+if ($WithFonts) {
+    Install-IosevkaNerdFont
+}
+
+Install-AlacrittyConfig
+
 $nvimPath = "$env:LOCALAPPDATA\nvim"
 
 if (Test-Path $nvimPath) {
@@ -95,14 +133,6 @@ if (Test-Path $nvimPath) {
 
 Write-Host "Clonando configuración de Neovim..."
 git clone -b $NvimBranch $NvimRepo $nvimPath
-
-$alacrittySource = Join-Path $PSScriptRoot "configs\alacritty"
-$alacrittyTarget = "$env:APPDATA\alacritty"
-
-if ($WithAlacritty -and (Test-Path $alacrittySource)) {
-    New-Item -ItemType Directory -Path $alacrittyTarget -Force | Out-Null
-    Copy-Item "$alacrittySource\*" $alacrittyTarget -Recurse -Force
-}
 
 Write-Host ""
 Write-Host "HILVIM instalado correctamente."
