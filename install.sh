@@ -3,7 +3,7 @@ set -e
 
 FULL=false
 WITH_ALACRITTY=false
-NVIM_REPO="https://github.com/TU_USUARIO/TU_REPO_NVIM.git"
+NVIM_REPO="https://github.com/Hilvvy/nvim-config.git"
 NVIM_BRANCH="stable"
 
 while [[ $# -gt 0 ]]; do
