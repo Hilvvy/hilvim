@@ -1,19 +1,52 @@
 # HILVIM
 
-HILVIM es un entorno de desarrollo basado en Neovim + LazyVim que instala automáticamente herramientas comunes para desarrollo moderno.
+HILVIM es un entorno de desarrollo portable basado en Neovim + LazyVim.
 
-Incluye:
+Automatiza la instalación de:
 
-* Neovim latest
+* Neovim (última versión estable)
 * LazyVim
+* Git
 * Node.js
 * ripgrep
 * fd
-* clang
-* cmake
+* Herramientas de compilación C/C++ (clang, make, cmake)
 * Zig
-* netcoredbg (.NET DAP)
+* Python (opcional)
+* .NET SDK (opcional)
+* Java JDK (opcional)
+* netcoredbg (depurador para .NET)
 * Alacritty (opcional)
+* Iosevka Nerd Font Mono (opcional)
+
+El objetivo es ofrecer un entorno de desarrollo reproducible y portable para Windows y Linux, similar a un "VS Code portable", pero completamente basado en Neovim.
+
+---
+
+# Características
+
+* Instaladores multiplataforma para Windows y Linux.
+* Instalación automática de herramientas de desarrollo.
+* Configuración automática de Neovim desde un repositorio Git.
+* Instalación opcional de Alacritty con un `alacritty.toml` preconfigurado.
+* Instalación opcional de Iosevka Nerd Font Mono.
+* Instalación automática de `netcoredbg` para depuración de .NET.
+* En Linux se instala la última versión oficial de Neovim, evitando versiones desactualizadas de los repositorios.
+
+---
+
+# Estructura del Repositorio
+
+```text
+hilvim/
+├── install.ps1
+├── install.sh
+├── README.md
+├── configs/
+│   └── alacritty/
+│       └── alacritty.toml
+└── scripts/
+```
 
 ---
 
@@ -21,146 +54,191 @@ Incluye:
 
 ## Windows
 
-* Windows 10/11
+* Windows 10 u 11
 * PowerShell
-* `winget` instalado
+* `winget`
 
 ## Linux
 
-* Ubuntu / Arch / Fedora
+* Ubuntu, Arch Linux, Fedora o distribuciones compatibles
 * Bash
 * `curl`
-* acceso sudo
+* `sudo`
 
 ---
 
-# Instalación en Windows
+# Instalación
 
-## 1. Clonar el repositorio
+## Windows
+
+### Clonar el repositorio
 
 ```powershell
 git clone https://github.com/Hilvyy/hilvim.git
 cd hilvim
 ```
 
----
-
-## 2. Ejecutar el instalador
-
-Instalación completa:
+### Instalación completa
 
 ```powershell
-.\install.ps1 -Full -WithAlacritty `
+.\install.ps1 -Full -WithAlacritty -WithFonts
+```
+
+### Instalación mínima
+
+```powershell
+.\install.ps1
+```
+
+### Usando un repositorio de configuración personalizado
+
+```powershell
+.\install.ps1 -Full -WithAlacritty -WithFonts `
   -NvimRepo "https://github.com/Hilvyy/nvim-config.git" `
   -NvimBranch "stable"
 ```
 
-Instalación mínima:
-
-```powershell
-.\install.ps1 `
-  -NvimRepo "https://github.com/Hilvyy/nvim-config.git"
-```
-
 ---
 
-## 3. Reiniciar terminal
+## Linux
 
-Cerrar y volver a abrir PowerShell o Windows Terminal.
-
----
-
-## 4. Abrir Neovim
-
-```powershell
-nvim
-```
-
-La primera vez LazyVim instalará plugins automáticamente.
-
----
-
-# Instalación en Linux
-
-## 1. Clonar el repositorio
+### Clonar el repositorio
 
 ```bash
 git clone https://github.com/Hilvyy/hilvim.git
 cd hilvim
 ```
 
----
-
-## 2. Dar permisos
+### Dar permisos de ejecución
 
 ```bash
 chmod +x install.sh
 ```
 
----
-
-## 3. Ejecutar el instalador
-
-Instalación completa:
+### Instalación completa
 
 ```bash
-./install.sh --full --with-alacritty \
+./install.sh --full --with-alacritty --with-fonts
+```
+
+### Instalación mínima
+
+```bash
+./install.sh
+```
+
+### Usando un repositorio de configuración personalizado
+
+```bash
+./install.sh --full --with-alacritty --with-fonts \
   --repo "https://github.com/Hilvyy/nvim-config.git" \
   --branch "stable"
 ```
 
-Instalación mínima:
+---
 
-```bash
-./install.sh \
-  --repo "https://github.com/Hilvyy/nvim-config.git"
-```
+# Flags Opcionales
+
+## Windows
+
+* `-Full` → Instala Python, .NET SDK, Java JDK y `netcoredbg`
+* `-WithAlacritty` → Instala Alacritty y copia `alacritty.toml`
+* `-WithFonts` → Instala Iosevka Nerd Font Mono
+
+## Linux
+
+* `--full` → Instala Python, .NET SDK, Java JDK y `netcoredbg`
+* `--with-alacritty` → Instala Alacritty y copia `alacritty.toml`
+* `--with-fonts` → Instala Iosevka Nerd Font Mono
 
 ---
 
-## 4. Reiniciar terminal
+# Primer Inicio
 
-```bash
-source ~/.bashrc
-```
-
-O cerrar y volver a abrir la terminal.
-
----
-
-## 5. Verificar instalación
-
-```bash
-nvim --version
-```
-
-Debe mostrar:
-
-```txt
-NVIM v0.11.x
-```
-
----
-
-## 6. Abrir Neovim
+Después de la instalación:
 
 ```bash
 nvim
 ```
 
-La primera vez LazyVim instalará plugins automáticamente.
+En la primera ejecución, LazyVim instalará automáticamente todos los plugins.
 
 ---
 
-# Actualizar instalación
+# Configuración de Alacritty
 
-## Actualizar configuración de Neovim
+Si se usa `--with-alacritty` o `-WithAlacritty`, el instalador copia:
+
+```text
+configs/alacritty/alacritty.toml
+```
+
+A:
+
+### Linux
+
+```text
+~/.config/alacritty/alacritty.toml
+```
+
+### Windows
+
+```text
+%APPDATA%\\alacritty\\alacritty.toml
+```
+
+---
+
+# Fuentes
+
+Si se usa `--with-fonts` o `-WithFonts`, el instalador descarga e instala:
+
+* Iosevka Nerd Font Mono
+
+Configuración recomendada para Alacritty:
+
+```toml
+[font.normal]
+family = "Iosevka Nerd Font Mono"
+style = "Regular"
+```
+
+---
+
+# Depuración de .NET
+
+Cuando se utiliza la instalación completa, HILVIM instala `netcoredbg`.
+
+Verificar la instalación:
+
+```bash
+netcoredbg --version
+```
+
+Para depurar un proyecto .NET:
+
+```bash
+dotnet build
+nvim .
+```
+
+Luego presioná:
+
+```text
+F5
+```
+
+Y seleccioná `Launch`.
+
+---
+
+# Actualización
+
+## Actualizar la configuración de Neovim
 
 ```bash
 git -C ~/.config/nvim pull origin stable
 ```
-
----
 
 ## Actualizar plugins
 
@@ -171,94 +249,43 @@ Dentro de Neovim:
 :MasonUpdate
 ```
 
----
-
-## Actualizar HILVIM
+## Actualizar el repositorio de HILVIM
 
 ```bash
 cd ~/hilvim
 git pull
 ```
 
----
-
-# .NET Debugging (DAP)
-
-HILVIM instala automáticamente:
-
-```txt
-netcoredbg
-```
-
-Verificar:
+## Actualizar paquetes del sistema (Linux)
 
 ```bash
-netcoredbg --version
+sudo apt update && sudo apt upgrade -y
 ```
 
 ---
 
-## Debuggear aplicación .NET
+# Flujo de Trabajo Recomendado
 
-1. Compilar proyecto:
-
-```bash
-dotnet build
+```text
+Hilvyy/nvim-config (desarrollo)
+          ↓
+      rama stable
+          ↓
+      Hilvyy/hilvim
+          ↓
+ Equipos instalados
 ```
 
-1. Abrir proyecto:
-
-```bash
-nvim .
-```
-
-1. Iniciar debugging:
-
-```txt
-F5
-```
-
-1. Seleccionar:
-
-```txt
-Launch
-```
-
-1. Elegir el `.dll` generado.
+1. Desarrollar y probar cambios en `Hilvyy/nvim-config`.
+2. Fusionar los cambios probados a la rama `stable`.
+3. HILVIM instala la rama `stable`.
+4. Las instalaciones existentes se actualizan con `git pull`.
 
 ---
 
-# Flujo recomendado
+# Solución de Problemas
 
-```txt
-Hilvyy/nvim-config (dev)
-        ↓
-stable branch
-        ↓
-Hilvyy/hilvim
-        ↓
-instalaciones físicas
-```
-
----
-
-# Recomendaciones
-
-## Linux
-
-* Se recomienda usar la versión latest oficial de Neovim.
-* El installer ya evita la versión vieja de `apt`.
-
-## Windows
-
-* Se recomienda Windows Terminal o Alacritty.
-* Reiniciar terminal después de instalar.
-
----
-
-# Solución de problemas
-
-## LazyVim pide Neovim >= 0.11
+## LazyVim requiere Neovim >= 0.11
 
 Verificar:
 
@@ -266,23 +293,17 @@ Verificar:
 nvim --version
 ```
 
-Si aparece una versión vieja, reiniciar terminal.
+El instalador de Linux descarga automáticamente la última versión oficial de Neovim.
 
 ---
 
-## `fd` no existe en Ubuntu
+## El comando `fd` no existe en Ubuntu
 
-Ubuntu instala:
-
-```txt
-fdfind
-```
-
-El installer crea automáticamente alias `fd`.
+Ubuntu instala `fdfind`. El instalador crea automáticamente un alias `fd`.
 
 ---
 
-## Error con `netcoredbg`
+## netcoredbg no se encuentra
 
 Verificar:
 
@@ -293,16 +314,23 @@ netcoredbg --version
 
 ---
 
-## Error de Copilot
+## Errores de Copilot
 
-Copilot puede deshabilitarse en Linux/VM si no se utiliza.
+Copilot puede deshabilitarse si no se utiliza.
 
 ---
 
-# Próximamente
+# Próximas Características
 
 * `update.sh`
+* `update.ps1`
 * `doctor.sh`
-* instalación automática de Nerd Fonts
-* soporte Termux/Android
-* configuración portable tipo VSCode portable
+* `doctor.ps1`
+* Soporte para Termux/Android
+* Presets adicionales de terminal
+
+---
+
+# Licencia
+
+MIT License.
