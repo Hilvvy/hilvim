@@ -206,25 +206,25 @@ netcoredbg --version
 dotnet build
 ```
 
-2. Abrir proyecto:
+1. Abrir proyecto:
 
 ```bash
 nvim .
 ```
 
-3. Iniciar debugging:
+1. Iniciar debugging:
 
 ```txt
 F5
 ```
 
-4. Seleccionar:
+1. Seleccionar:
 
 ```txt
 Launch
 ```
 
-5. Elegir el `.dll` generado.
+1. Elegir el `.dll` generado.
 
 ---
 
@@ -305,4 +305,4 @@ Copilot puede deshabilitarse en Linux/VM si no se utiliza.
 * `doctor.sh`
 * instalación automática de Nerd Fonts
 * soporte Termux/Android
-* configuración portable tipo VSCode
+* configuración portable tipo VSCode portable
