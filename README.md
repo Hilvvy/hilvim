@@ -74,7 +74,7 @@ hilvim/
 ### Clonar el repositorio
 
 ```powershell
-git clone https://github.com/Hilvyy/hilvim.git
+git clone https://github.com/Hilvvy/hilvim.git
 cd hilvim
 ```
 
@@ -94,7 +94,7 @@ cd hilvim
 
 ```powershell
 .\install.ps1 -Full -WithAlacritty -WithFonts `
-  -NvimRepo "https://github.com/Hilvyy/nvim-config.git" `
+  -NvimRepo "https://github.com/Hilvvy/nvim-config.git" `
   -NvimBranch "stable"
 ```
 
@@ -105,7 +105,7 @@ cd hilvim
 ### Clonar el repositorio
 
 ```bash
-git clone https://github.com/Hilvyy/hilvim.git
+git clone https://github.com/Hilvvy/hilvim.git
 cd hilvim
 ```
 
@@ -131,7 +131,7 @@ chmod +x install.sh
 
 ```bash
 ./install.sh --full --with-alacritty --with-fonts \
-  --repo "https://github.com/Hilvyy/nvim-config.git" \
+  --repo "https://github.com/Hilvvy/nvim-config.git" \
   --branch "stable"
 ```
 
@@ -267,16 +267,16 @@ sudo apt update && sudo apt upgrade -y
 # Flujo de Trabajo Recomendado
 
 ```text
-Hilvyy/nvim-config (desarrollo)
+Hilvvy/nvim-config (desarrollo)
           ↓
       rama stable
           ↓
-      Hilvyy/hilvim
+      Hilvvy/hilvim
           ↓
  Equipos instalados
 ```
 
-1. Desarrollar y probar cambios en `Hilvyy/nvim-config`.
+1. Desarrollar y probar cambios en `Hilvvy/nvim-config`.
 2. Fusionar los cambios probados a la rama `stable`.
 3. HILVIM instala la rama `stable`.
 4. Las instalaciones existentes se actualizan con `git pull`.
