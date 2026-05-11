@@ -2,7 +2,7 @@ param(
     [switch]$Full,
     [switch]$WithAlacritty,
     [switch]$WithFonts,
-    [string]$NvimRepo = "https://github.com/Hilvyy/nvim-config.git",
+    [string]$NvimRepo = "https://github.com/Hilvvy/nvim-config.git",
     [string]$NvimBranch = "stable"
 )
 
