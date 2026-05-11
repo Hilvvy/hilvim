@@ -4,7 +4,7 @@ set -e
 FULL=false
 WITH_ALACRITTY=false
 WITH_FONTS=false
-NVIM_REPO="https://github.com/Hilvyy/nvim-config.git"
+NVIM_REPO="https://github.com/Hilvvy/nvim-config.git"
 NVIM_BRANCH="stable"
 
 while [[ $# -gt 0 ]]; do
